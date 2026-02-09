@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./register.css";
-import { useAuth } from "./auth";
-const API = "http://127.0.0.1:5000";
-
+const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");

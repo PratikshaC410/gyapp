@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./dashboard.css";
-
-const API = "http://127.0.0.1:5000";
-
+const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Dashboard = () => {
   const navigate = useNavigate();
   const { token } = useAuth();

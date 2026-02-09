@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./post.css";
 import { useParams } from "react-router-dom";
-
-const API = "http://127.0.0.1:5000";
-
+const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);

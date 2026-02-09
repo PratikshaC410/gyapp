@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { useAuth } from "./auth";
-const API = "http://127.0.0.1:5000";
-
+const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Login = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");

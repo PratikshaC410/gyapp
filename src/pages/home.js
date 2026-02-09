@@ -2,9 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "./auth";
 import "./home.css";
-
-const API = "http://127.0.0.1:5000";
-
+const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const { isloggedin } = useAuth();

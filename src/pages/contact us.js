@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import "./contact-us.css";
-
-const API = "http://127.0.0.1:5000";
-
+const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Contact = () => {
   const [contact, setContact] = useState({
     email: "",
