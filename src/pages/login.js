@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { useAuth } from "./auth";
+import { toast } from "react-toastify";
 const API = process.env.REACT_APP_BACKEND_BASEURL;
+
 const Login = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
@@ -26,14 +28,14 @@ const Login = () => {
       if (res.ok) {
         store_token_ls(res_data.token);
         console.log("Token stored:", localStorage.getItem("token"));
-        alert("Login successful");
+        toast("Login successful");
         navigate("/dashboard");
       } else {
-        alert(res_data.msg || "Login failed");
+        toast(res_data.msg || "Login failed");
       }
     } catch (err) {
       console.error(err);
-      alert("Server error. Try again.");
+      toast("Server error. Try again.");
     }
   };
 

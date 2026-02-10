@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./post.css";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -30,7 +31,7 @@ const Posts = () => {
         const data = await res.json();
         setPosts(data);
       } catch (err) {
-        alert("Error fetching posts");
+        toast("Error fetching posts");
       }
     };
 

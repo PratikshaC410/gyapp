@@ -29,10 +29,6 @@ const Home = () => {
       navigate(`/posts/${postId}`);
     }
   };
-  const handleHome = () => {
-    document.body.classList.remove("modal-open");
-    navigate("/");
-  };
 
   return (
     <div className="home-div">

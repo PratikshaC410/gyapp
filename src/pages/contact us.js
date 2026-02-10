@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./contact-us.css";
+import { toast } from "react-toastify";
 const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Contact = () => {
   const [contact, setContact] = useState({
@@ -29,14 +30,14 @@ const Contact = () => {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Message sent successfully");
+        toast("Message sent successfully");
         setContact({ email: "", message: "" });
       } else {
-        alert(data.message || "Message not sent");
+        toast(data.message || "Message not sent");
       }
     } catch (error) {
       console.error(error);
-      alert("Server error");
+      toast("Server error");
     }
   };
 

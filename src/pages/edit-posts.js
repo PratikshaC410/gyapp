@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./dashboard.css";
+import { toast } from "react-toastify";
 const API = process.env.REACT_APP_BACKEND_BASEURL;
 const EditPost = () => {
   const { postId } = useParams();
@@ -9,37 +10,29 @@ const EditPost = () => {
   const { token } = useAuth();
 
   const [form, setForm] = useState({
-    /* ===== NEW: Candidate Info ===== */
     fullName: "",
     collegeName: "",
     degree: "",
     passoutYear: "",
     placedYear: "",
 
-    /* ===== OLD + NEW: Company Info ===== */
     company_name: "",
     role: "",
     source: "",
-
-    /* ===== OLD FIELDS (DO NOT REMOVE) ===== */
     interviewMode: "",
     difficulty: "",
     topicsAsked: "",
-    selectionProcedure: "", // OLD string version
+    selectionProcedure: "",
     codingDetails: "",
     preparation: "",
     mistakes: "",
     advice: "",
     tips: "",
-
-    /* ===== NEW: Structured Rounds ===== */
     selectionRounds: [{ roundType: "", roundMode: "", description: "" }],
 
-    /* ===== NEW: Resources ===== */
     resources: [""],
   });
 
-  /* ================= FETCH ================= */
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -64,21 +57,17 @@ const EditPost = () => {
             data.resources?.length > 0 ? data.resources : form.resources,
         });
       } catch (error) {
-        alert("Error loading post");
+        toast("Error loading post");
       }
     };
 
     fetchPost();
-    // eslint-disable-next-line
   }, [postId, token]);
-
-  /* ================= HANDLERS ================= */
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  /* ===== ROUNDS ===== */
   const handleRoundChange = (index, field, value) => {
     const updated = [...form.selectionRounds];
     updated[index][field] = value;
@@ -102,7 +91,6 @@ const EditPost = () => {
     });
   };
 
-  /* ===== RESOURCES ===== */
   const handleResourceChange = (index, value) => {
     const updated = [...form.resources];
     updated[index] = value;
@@ -120,7 +108,6 @@ const EditPost = () => {
     });
   };
 
-  /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -136,20 +123,18 @@ const EditPost = () => {
 
       if (!res.ok) throw new Error("Update failed");
 
-      alert("Post updated successfully");
+      toast("Post updated successfully");
       navigate("/myposts");
     } catch (error) {
-      alert("Error updating post");
+      toast("Error updating post");
     }
   };
 
-  /* ================= UI ================= */
   return (
     <div className="dashboard-div">
       <h1 className="dashboard-title">Edit Interview Experience</h1>
 
       <form className="dashboard-form" onSubmit={handleSubmit}>
-        {/* ===== CANDIDATE INFO ===== */}
         <h3>Candidate Information</h3>
         <input
           name="fullName"
@@ -184,7 +169,6 @@ const EditPost = () => {
           onChange={handleChange}
         />
 
-        {/* ===== COMPANY ===== */}
         <h3>Company & Role</h3>
         <input
           name="company_name"
@@ -207,7 +191,6 @@ const EditPost = () => {
           onChange={handleChange}
         />
 
-        {/* ===== OLD FIELDS ===== */}
         <h3>Interview Details (Old)</h3>
         <input
           name="interviewMode"
@@ -258,7 +241,6 @@ const EditPost = () => {
           onChange={handleChange}
         />
 
-        {/* ===== NEW STRUCTURED ROUNDS ===== */}
         <h3>Structured Selection Rounds</h3>
         {form.selectionRounds.map((round, index) => (
           <div key={index} className="dashboard-box">
@@ -298,7 +280,6 @@ const EditPost = () => {
           + Add Round
         </button>
 
-        {/* ===== RESOURCES ===== */}
         <h3>Resources</h3>
         {form.resources.map((r, index) => (
           <div key={index}>
@@ -318,7 +299,6 @@ const EditPost = () => {
           + Add Resource
         </button>
 
-        {/* ===== ADVICE ===== */}
         <h3>Advice</h3>
         <textarea
           name="advice"

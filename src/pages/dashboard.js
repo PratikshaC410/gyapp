@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./dashboard.css";
+import { toast } from "react-toastify";
 const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ const Dashboard = () => {
       body: JSON.stringify(form),
     });
 
-    alert("Post created");
+    toast("Post created");
     navigate("/myposts");
   };
 

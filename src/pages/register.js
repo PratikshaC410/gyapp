@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./register.css";
+import { toast } from "react-toastify";
 const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -46,15 +47,15 @@ const Register = () => {
       if (response.ok) {
         localStorage.setItem("verifyEmail", email);
 
-        alert(res_data.msg || "Registration successful. OTP sent!");
+        toast(res_data.msg || "Registration successful. OTP sent!");
         setShowOtpPopup(true);
         setTimer(300);
       } else {
-        alert(res_data.msg || "Registration failed");
+        toast(res_data.msg || "Registration failed");
       }
     } catch (error) {
       console.error(error);
-      alert("Registration failed");
+      toast("Registration failed");
     }
   };
 
@@ -69,15 +70,15 @@ const Register = () => {
       const data = await respond.json();
 
       if (respond.ok) {
-        alert("Email verified! Please login.");
+        toast("Email verified! Please login.");
         localStorage.removeItem("verifyEmail");
         navigate("/login");
       } else {
-        alert(data.msg || "Invalid OTP");
+        toast(data.msg || "Invalid OTP");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("OTP verification failed");
+      toast("OTP verification failed");
     }
   };
 
@@ -89,7 +90,7 @@ const Register = () => {
         body: JSON.stringify({ email }),
       });
 
-      if (!response) alert("Error in closing popup");
+      if (!response) toast("Error in closing popup");
     } catch (error) {
       console.error("Error");
     }
@@ -156,7 +157,7 @@ const Register = () => {
             <button
               onClick={() => {
                 if (otp.length) handleOtpSubmit();
-                else alert("OTP cannot be empty");
+                else toast("OTP cannot be empty");
               }}
               disabled={timer === 0}
             >

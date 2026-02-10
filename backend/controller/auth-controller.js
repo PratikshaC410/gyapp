@@ -3,7 +3,7 @@ require("dotenv").config();
 const { userdb, otpdb, postsdb, contactdb } = require("./database");
 const bcrypt = require("bcryptjs");
 const expire_time = new Date(Date.now() + 10 * 60 * 1000);
-
+const jwt = require("jsonwebtoken");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   port: 587,

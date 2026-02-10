@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./myposts.css";
+import { toast } from "react-toastify";
 const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Myposts = () => {
   const [posts, setPosts] = useState([]);
@@ -27,7 +28,7 @@ const Myposts = () => {
         const data = await res.json();
         setPosts(data);
       } catch (err) {
-        alert("Error fetching my posts");
+        toast("Error fetching my posts");
       }
     };
 
@@ -44,9 +45,9 @@ const Myposts = () => {
       });
 
       setPosts((prev) => prev.filter((p) => p._id !== postId));
-      alert("Post deleted successfully");
+      toast("Post deleted successfully");
     } catch (error) {
-      alert("Delete failed");
+      toast("Delete failed");
     }
   };
 
