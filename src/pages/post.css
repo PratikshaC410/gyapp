@@ -324,3 +324,18 @@ body.modal-open {
   font-size: 0.95rem;
   font-weight: 400;
 }
+
+.company-search {
+  margin: 15px 0;
+  padding: 10px;
+  width: 300px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.company-search:focus {
+  outline: none;
+  border-color: #4a5bdc;
+  box-shadow: 0 0 5px rgba(74, 91, 220, 0.4);
+}

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./post.css";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+
 const API = process.env.REACT_APP_BACKEND_BASEURL;
+
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [companySearch, setCompanySearch] = useState("");
 
   const { token, isloggedin } = useAuth();
   const navigate = useNavigate();
+  const { postId } = useParams();
 
   useEffect(() => {
     if (!isloggedin) {
@@ -38,16 +41,6 @@ const Posts = () => {
     fetchPosts();
   }, [token, isloggedin, navigate]);
 
-  const openModal = (post) => {
-    setSelectedPost(post);
-    document.body.classList.add("modal-open");
-  };
-
-  const closeModal = () => {
-    setSelectedPost(null);
-    document.body.classList.remove("modal-open");
-  };
-  const { postId } = useParams();
   useEffect(() => {
     if (postId && posts.length > 0) {
       const found = posts.find((p) => p._id === postId);
@@ -57,6 +50,7 @@ const Posts = () => {
       }
     }
   }, [postId, posts]);
+
   useEffect(() => {
     return () => {
       document.body.classList.remove("modal-open");
@@ -64,16 +58,38 @@ const Posts = () => {
     };
   }, []);
 
+  const openModal = (post) => {
+    setSelectedPost(post);
+    document.body.classList.add("modal-open");
+  };
+
+  const closeModal = () => {
+    setSelectedPost(null);
+    document.body.classList.remove("modal-open");
+  };
+
+  const filteredPosts = posts.filter((p) =>
+    p.company_name?.toLowerCase().includes(companySearch.toLowerCase()),
+  );
+
   return (
     <>
       <div className="posts-div page-content">
         <h1>All Interview Experiences</h1>
 
-        {posts.length === 0 ? (
-          <p className="empty-text">No posts yet.</p>
+        <input
+          type="text"
+          placeholder="Search by company name..."
+          value={companySearch}
+          onChange={(e) => setCompanySearch(e.target.value)}
+          className="company-search"
+        />
+
+        {filteredPosts.length === 0 ? (
+          <p className="empty-text">No posts found.</p>
         ) : (
           <div className="posts-grid">
-            {posts.map((p) => (
+            {filteredPosts.map((p) => (
               <div className="post-card" key={p._id}>
                 <div className="post-header">
                   <h2>Company: {p.company_name}</h2>
@@ -125,6 +141,7 @@ const Posts = () => {
         )}
       </div>
 
+      {/* 🔥 Modal Section */}
       {selectedPost && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()}>
@@ -133,7 +150,7 @@ const Posts = () => {
 
             {selectedPost.fullName && (
               <div className="candidate-info">
-                <h3 className="candidate-name">
+                <h3>
                   <b>Name:</b>{" "}
                   <span className="field-value">{selectedPost.fullName}</span>
                 </h3>
@@ -142,12 +159,14 @@ const Posts = () => {
                   <b>Degree:</b>{" "}
                   <span className="field-value">{selectedPost.degree}</span>
                 </p>
+
                 <p>
                   <b>College Name:</b>{" "}
                   <span className="field-value">
                     {selectedPost.collegeName}
                   </span>
                 </p>
+
                 <p>
                   <b>Passout Year:</b>{" "}
                   <span className="field-value">
@@ -191,7 +210,7 @@ const Posts = () => {
 
             {selectedPost.selectionProcedure && (
               <p>
-                <b>Selection Procedure (Old):</b>{" "}
+                <b>Selection Procedure:</b>{" "}
                 <span className="field-value">
                   {selectedPost.selectionProcedure}
                 </span>
@@ -241,12 +260,10 @@ const Posts = () => {
                 {selectedPost.selectionRounds.map((round, index) => (
                   <div key={index} className="round-box">
                     <p>
-                      <b>Round {index + 1}:</b>{" "}
-                      <span className="field-value">
-                        {round.roundType} ({round.roundMode})
-                      </span>
+                      <b>Round {index + 1}:</b> {round.roundType} (
+                      {round.roundMode})
                     </p>
-                    <p className="field-value">{round.description}</p>
+                    <p>{round.description}</p>
                   </div>
                 ))}
               </>
