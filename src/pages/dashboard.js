@@ -9,7 +9,6 @@ const Dashboard = () => {
   const { token } = useAuth();
 
   const [form, setForm] = useState({
-    // OLD
     company_name: "",
     role: "",
     source: "",
@@ -23,7 +22,6 @@ const Dashboard = () => {
     advice: "",
     tips: "",
 
-    // NEW
     fullName: "",
     collegeName: "",
     degree: "",

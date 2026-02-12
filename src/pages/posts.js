@@ -9,12 +9,16 @@ const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
-  const [companyFilter, setCompanyFilter] = useState("");
+
+  // 🔥 Filter States
+  const [filterType, setFilterType] = useState("company");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { token, isloggedin } = useAuth();
   const navigate = useNavigate();
   const { postId } = useParams();
 
+  // ================= Fetch Posts =================
   useEffect(() => {
     if (!isloggedin) {
       navigate("/login");
@@ -41,6 +45,7 @@ const Posts = () => {
     fetchPosts();
   }, [token, isloggedin, navigate]);
 
+  // ================= Handle Direct Modal from URL =================
   useEffect(() => {
     if (postId && posts.length > 0) {
       const found = posts.find((p) => p._id === postId);
@@ -58,6 +63,7 @@ const Posts = () => {
     };
   }, []);
 
+  // ================= Modal Functions =================
   const openModal = (post) => {
     setSelectedPost(post);
     document.body.classList.add("modal-open");
@@ -68,23 +74,55 @@ const Posts = () => {
     document.body.classList.remove("modal-open");
   };
 
-  const filteredPosts = posts.filter((p) =>
-    p.company_name?.toLowerCase().includes(companyFilter.toLowerCase()),
-  );
+  // ================= Filtering Logic =================
+  const filteredPosts = posts.filter((p) => {
+    const search = searchTerm.toLowerCase();
+
+    switch (filterType) {
+      case "company":
+        return p.company_name?.toLowerCase().includes(search);
+
+      case "name":
+        return p.fullName?.toLowerCase().includes(search);
+
+      case "year":
+        return p.passoutYear?.toString().toLowerCase().includes(search);
+
+      case "role":
+        return p.role?.toLowerCase().includes(search);
+
+      default:
+        return true;
+    }
+  });
 
   return (
     <>
       <div className="posts-div page-content">
         <h1>All Interview Experiences</h1>
 
-        <input
-          type="text"
-          placeholder="Search by company name..."
-          value={companyFilter}
-          onChange={(e) => setCompanyFilter(e.target.value)}
-          className="company-filter"
-        />
+        {/* 🔥 Filter Controls */}
+        <div className="filter-controls">
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+          >
+            <option value="company">Company</option>
+            <option value="name">Name</option>
+            <option value="year">Passout Year</option>
+            <option value="role">Role</option>
+          </select>
 
+          <input
+            type="text"
+            placeholder={`Search by ${filterType}...`}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="company-filter"
+          />
+        </div>
+
+        {/* ================= Posts Display ================= */}
         {filteredPosts.length === 0 ? (
           <p className="empty-text">No posts found.</p>
         ) : (
@@ -141,6 +179,7 @@ const Posts = () => {
         )}
       </div>
 
+      {/* ================= Modal ================= */}
       {selectedPost && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()}>
