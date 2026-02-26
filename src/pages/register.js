@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./register.css";
 import { toast } from "react-toastify";
-const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -36,7 +35,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API}/api/auth/register`, {
+      const response = await fetch(`/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
@@ -61,7 +60,7 @@ const Register = () => {
 
   const handleOtpSubmit = async () => {
     try {
-      const respond = await fetch(`${API}/api/auth/verify`, {
+      const respond = await fetch(`/api/auth/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
@@ -84,7 +83,7 @@ const Register = () => {
 
   const handlepopclose = async () => {
     try {
-      const response = await fetch(`${API}/api/auth/pop-close`, {
+      const response = await fetch(`/api/auth/pop-close`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

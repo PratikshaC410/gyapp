@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./contact-us.css";
 import { toast } from "react-toastify";
-const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Contact = () => {
   const [contact, setContact] = useState({
     email: "",
@@ -19,7 +18,7 @@ const Contact = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${API}/api/auth/contactresponse`, {
+      const res = await fetch(`/api/auth/contactresponse`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

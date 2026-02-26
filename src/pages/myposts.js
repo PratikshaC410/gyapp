@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./myposts.css";
 import { toast } from "react-toastify";
-const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Myposts = () => {
   const [posts, setPosts] = useState([]);
   const { token, isloggedin } = useAuth();
@@ -17,7 +16,7 @@ const Myposts = () => {
 
     const fetchMyPosts = async () => {
       try {
-        const res = await fetch(`${API}/api/auth/view_my_posts`, {
+        const res = await fetch(`/api/auth/view_my_posts`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -37,7 +36,7 @@ const Myposts = () => {
 
   const handleDelete = async (postId) => {
     try {
-      await fetch(`${API}/api/auth/myposts/${postId}`, {
+      await fetch(`/api/auth/myposts/${postId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

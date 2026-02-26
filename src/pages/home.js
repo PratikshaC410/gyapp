@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "./auth";
 import "./home.css";
-const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const { isloggedin } = useAuth();
@@ -11,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPublicPosts = async () => {
       try {
-        const res = await fetch(`${API}/api/auth/public_posts`);
+        const res = await fetch(`/api/auth/public_posts`);
         const data = await res.json();
         setPosts(data);
       } catch (error) {

@@ -4,13 +4,10 @@ import { useAuth } from "./auth";
 import "./post.css";
 import { toast } from "react-toastify";
 
-const API = process.env.REACT_APP_BACKEND_BASEURL;
-
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
 
-  // 🔥 Filter States
   const [filterType, setFilterType] = useState("company");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -18,7 +15,6 @@ const Posts = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
 
-  // ================= Fetch Posts =================
   useEffect(() => {
     if (!isloggedin) {
       navigate("/login");
@@ -27,7 +23,7 @@ const Posts = () => {
 
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`${API}/api/auth/view_posts`, {
+        const res = await fetch(`/api/auth/view_posts`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +41,6 @@ const Posts = () => {
     fetchPosts();
   }, [token, isloggedin, navigate]);
 
-  // ================= Handle Direct Modal from URL =================
   useEffect(() => {
     if (postId && posts.length > 0) {
       const found = posts.find((p) => p._id === postId);
@@ -63,7 +58,6 @@ const Posts = () => {
     };
   }, []);
 
-  // ================= Modal Functions =================
   const openModal = (post) => {
     setSelectedPost(post);
     document.body.classList.add("modal-open");
@@ -74,7 +68,6 @@ const Posts = () => {
     document.body.classList.remove("modal-open");
   };
 
-  // ================= Filtering Logic =================
   const filteredPosts = posts.filter((p) => {
     const search = searchTerm.toLowerCase();
 
@@ -101,7 +94,6 @@ const Posts = () => {
       <div className="posts-div page-content">
         <h1>All Interview Experiences</h1>
 
-        {/* 🔥 Filter Controls */}
         <div className="filter-controls">
           <select
             value={filterType}
@@ -122,7 +114,6 @@ const Posts = () => {
           />
         </div>
 
-        {/* ================= Posts Display ================= */}
         {filteredPosts.length === 0 ? (
           <p className="empty-text">No posts found.</p>
         ) : (
@@ -179,7 +170,6 @@ const Posts = () => {
         )}
       </div>
 
-      {/* ================= Modal ================= */}
       {selectedPost && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()}>

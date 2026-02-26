@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./dashboard.css";
 import { toast } from "react-toastify";
-const API = process.env.REACT_APP_BACKEND_BASEURL;
 const EditPost = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ const EditPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await fetch(`${API}/api/auth/myposts/${postId}`, {
+        const res = await fetch(`/api/auth/myposts/${postId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -112,7 +111,7 @@ const EditPost = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${API}/api/auth/myposts/${postId}`, {
+      const res = await fetch(`/api/auth/myposts/${postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

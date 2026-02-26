@@ -7,7 +7,6 @@ import {
 } from "react";
 
 export const AuthContext = createContext();
-const API = process.env.REACT_APP_BACKEND_BASEURL;
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -29,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const userAuthentication = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/api/auth/user`, {
+      const res = await fetch(`/api/auth/user`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

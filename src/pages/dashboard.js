@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import "./dashboard.css";
 import { toast } from "react-toastify";
-const API = process.env.REACT_APP_BACKEND_BASEURL;
 const Dashboard = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
@@ -61,7 +60,7 @@ const Dashboard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch(`${API}/api/auth/create_posts`, {
+    await fetch(`/api/auth/create_posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
